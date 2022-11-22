@@ -2,12 +2,15 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace pong_ping;
 
 public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+
+    Vector2 position = new Vector2(10,200);
+
+    Texture2D pixel;
 
     public Game1()
     {
@@ -27,6 +30,8 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+        pixel = Content.Load<Texture2D>("pixel");
+
         // TODO: use this.Content to load your game content here
     }
 
@@ -35,7 +40,16 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        // TODO: Add your update logic here
+        KeyboardState kState = Keyboard.GetState();
+        if(kState.IsKeyDown(Keys.W))
+        {
+            position.Y-=4;
+        }
+
+        if(kState.IsKeyDown(key: Keys.S))
+        {
+            position.Y+=4;
+        } // TODO: Add your update logic here
 
         base.Update(gameTime);
     }
@@ -43,6 +57,11 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
+
+        _spriteBatch.Begin();
+
+        _spriteBatch.Draw(pixel,new Rectangle(position.ToPoint(), new Point(20,200)), Color.White);
+        _spriteBatch.End();
 
         // TODO: Add your drawing code here
 
